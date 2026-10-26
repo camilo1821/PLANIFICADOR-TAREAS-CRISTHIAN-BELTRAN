@@ -1,0 +1,35 @@
+    if (tareas.length === 0) {
+        const vacio = document.createElement("p");
+        vacio.className = "text-center text-muted";
+        vacio.textContent = "No hay tareas.";
+        listaTareas.append(vacio);
+        return;
+    }
+
+    // funcion para guardar la informacion en el localStorage
+
+function guardarTarea() {
+    const tarea = {
+        id: Date.now(), // este es el identificador unico de la tarea en JSON
+        nombre: entradaTarea.value.trim(),
+        descripcion: entradaDescripcion.value.trim(),
+        asignado: entradaAsignado.value.trim(),
+        estado: entradaEstado.value,
+        fechaEntrega: entradaFecha.value
+    };
+
+    const tareas = JSON.parse(localStorage.getItem("tareas")) || [] // esta linea lee las tareas existentes
+    tareas.push(tarea);
+    localStorage.setItem("tareas", JSON.stringify(tareas));
+}
+
+function validarFecha(fecha) {
+    if (fecha === "") {
+        return false;
+    }
+    const fechaActual = new Date();
+    fechaActual.setHours(0, 0, 0, 0);
+    const [anio, mes, dia] = fecha.split("-").map(Number);
+    const fechaEscogida = new Date(anio, mes, dia);
+    return fechaEscogida >= fechaActual;
+}

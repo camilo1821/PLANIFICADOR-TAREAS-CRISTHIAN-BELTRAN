@@ -1,0 +1,68 @@
+body {
+background: #EEAECA;
+background: radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+}
+
+
+
+/* <weight>: Use a value from 100 to 900
+<uniquifier>: Use a unique and descriptive class name*/
+
+.bitcount-ink-titulo {
+  font-family: "Bitcount Ink", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 40px;
+  font-variation-settings:
+    "slnt" 0,
+    "CRSV" 0.5,
+    "ELSH" 0,
+    "ELXP" 0,
+    "SZP1" 0,
+    "SZP2" 0,
+    "XPN1" 0,
+    "XPN2" 0,
+    "YPN1" 0,
+    "YPN2" 0;
+}
+
+#logo {
+    margin-top: 1.5%;
+}
+
+.grechen-fuemen-regular {
+  font-family: "Grechen Fuemen", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+html, body {
+    overflow-x: hidden;
+}
+
+.navbar-brand.bitcount-ink-titulo {
+    white-space: normal;     /* permite que el texto baje de línea */
+    font-size: 0.95rem;      /* tamaño para móvil */
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .navbar-brand.bitcount-ink-titulo {
+        font-size: 1.5rem;
+    }
+}
+
+.min-dvh-100 {
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+footer {
+    position: static !important;
+}
+
+body {
+    height: auto !important;
+    overflow-x: hidden;
+}
