@@ -1,39 +1,73 @@
+import { crearTarjeta } from "./tarjeta.js";
+
 export class TaskManager {
     #tareas = [];
     #clave;
+    #contenedor;
+    #idActual = 0;  // contador de ids: la próxima tarea usa este número
+    #claveId;
 
-    constructor (clave = "tareas"){
+    constructor (clave = "tareas", contenedor, claveId = "ultimoId"){
         this.#clave = clave;
-        this.#cargar();
+        this.#contenedor = contenedor; // el div donde se pintan las tarjetas
+        this.#claveId = claveId;
     }
 
+    // guardar tareas y contador de ids en localStorag
+
+    guardar() {
+        localStorage.setItem(this.#clave, JSON.stringify(this.#tareas));
+        localStorage.setItem(this.#claveId, String(this.#idActual));
+    }
+   
     // leer las tarjetas guardadas
 
-    #cargar() {
-        try {
-            this.#tareas = JSON.parse(localStorage.getItem(this.#clave)) || [];
-        } catch {
-            this.#tareas = [];
+    cargar() {
+        const tareasGuardadas = localStorage.getItem(this.#clave);
+        if (tareasGuardadas) {
+            this.#tareas = JSON.parse(tareasGuardadas);
+        }
+
+        const idGuardado = localStorage.getItem(this.#claveId);
+        if (idGuardado) {
+            this.#idActual = Number(idGuardado);
         }
     }
 
-    #guardar() {
-        localStorage.setItem(this.#clave, JSON.stringify(this.#tareas));
+    // vuelve a dibujar todas las tarjetas a partir de la lista de tareas
+
+    renderizar() {
+        this.#contenedor.replaceChildren();  // vacía el contenedor para no duplicar tarjetas
+        this.#tareas.forEach(tarea => this.#contenedor.append(crearTarjeta(tarea)));
     }
 
     agregar(datos) {
-        const tarea = {id: Date.now(), ...datos} // ID de la tarea mas los datos del formulario
+        const tarea = {id: this.#idActual, ...datos};
+        this.#idActual++;  // el siguiente id es único
         this.#tareas.push(tarea);
-        this.#guardar();
+        this.renderizar();
         return tarea;
     }
 
     eliminar(id) {
         this.#tareas = this.#tareas.filter(tarea => tarea.id !== Number(id));
-        this.#guardar();
+        this.renderizar();
     }
 
     obtenerTodas() {
         return [...this.#tareas] // es una copia para que nadie modifique la lista desde afuera
     }
+
+    // recibe un id y devuelve la tarea que le corresponde
+
+    buscarTarea(id) {
+        let tareaEncontrada;
+        for (const tarea of this.#tareas) {
+            if (tarea.id === id) {
+                tareaEncontrada = tarea;
+            }
+        }
+        return tareaEncontrada;
+    }
 }
+
